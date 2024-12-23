@@ -14,16 +14,19 @@ interface DataPoint {
     y: number;
 }
 
-// Align Serie type with BumpSerie
-interface Serie extends BumpSerie<DataPoint, Record<string, unknown>> {
+interface Serie {
     id: string;
     data: DataPoint[];
-    [key: string]: any; // Allow additional properties
 }
+
+// Utility to cast Serie[] to BumpSerie<DataPoint, Record<string, unknown>>[]
+const castToBumpSeries = (data: Serie[]): BumpSerie<DataPoint, Record<string, unknown>>[] => {
+    return data as unknown as BumpSerie<DataPoint, Record<string, unknown>>[];
+};
 
 const MyResponsiveBump = ({ data }: { data: Serie[] }) => (
     <ResponsiveBump
-        data={data}
+        data={castToBumpSeries(data)} // Use the utility function here
         colors={{ scheme: "spectral" }}
         margin={{ top: 40, right: 100, bottom: 40, left: 60 }}
         lineWidth={3}
