@@ -5,19 +5,24 @@ import {
     CardHeader,
     CardTitle,
     CardDescription
-  } from "@/components/ui/card"
-  
-import { ResponsiveBump } from '@nivo/bump'
+} from "@/components/ui/card"
+import { ResponsiveBump, BumpDatum } from '@nivo/bump'
 
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
-const MyResponsiveBump = ({ data }: { data: any }) => (
+interface DataPoint {
+    x: string;
+    y: number;
+}
+
+interface Serie {
+    id: string;
+    data: DataPoint[];
+}
+
+const MyResponsiveBump = ({ data }: { data: Serie[] }) => (
     <ResponsiveBump
         data={data}
         colors={{ scheme: 'spectral' }}
+        margin={{ top: 40, right: 100, bottom: 40, left: 60 }}
         lineWidth={3}
         activeLineWidth={6}
         inactiveLineWidth={3}
@@ -56,7 +61,6 @@ const MyResponsiveBump = ({ data }: { data: any }) => (
             legendOffset: -40,
             truncateTickAt: 0
         }}
-        
         axisRight={null}
     />
 )
@@ -364,12 +368,16 @@ export default function General() {
           ]
         }
       ]
-      
-    return <Card className='w-full h-[300px]'>
-        <CardHeader>
-         <CardTitle>this week</CardTitle>
-    <CardDescription>hadou houma nata2ij</CardDescription>
-       </CardHeader>
-        <MyResponsiveBump data={data}/>
-    </Card>
+
+    return (
+        <Card className='w-full h-[300px]'>
+            <CardHeader>
+                <CardTitle>this week</CardTitle>
+                <CardDescription>hadou houma nata2ij</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[200px]">
+                <MyResponsiveBump data={data} />
+            </CardContent>
+        </Card>
+    )
 }
